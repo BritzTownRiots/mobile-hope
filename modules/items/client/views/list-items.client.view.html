@@ -1,0 +1,20 @@
+<section data-ng-controller="ItemsController" data-ng-init="find()">
+	<div class="page-header">
+		<h1>Item Inventory</h1>
+	</div>
+	<div class="list-group">
+		<a data-ng-repeat="item in items"  data-ui-sref="items.view({itemId: item._id})" class="list-group-item">
+			<small class="list-group-item-text">
+				Posted on
+				<span data-ng-bind="item.created | date:'mediumDate'"></span>
+				by
+				<span data-ng-bind="item.user.displayName"></span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="item.title"></h4>
+			<p class="list-group-item-text" data-ng-bind="item.content"></p>
+		</a>
+	</div>
+	<div class="alert alert-warning text-center" data-ng-if="items.$resolved && !items.length">
+		No items yet, why don't you <a data-ui-sref="items.create">create one</a>?
+	</div>
+</section>

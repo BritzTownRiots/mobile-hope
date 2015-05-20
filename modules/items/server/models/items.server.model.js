@@ -9,7 +9,7 @@ var mongoose = require('mongoose'),
 /**
  * Article Schema
  */
-var ArticleSchema = new Schema({
+var ItemSchema = new Schema({
 	created: {
 		type: Date,
 		default: Date.now
@@ -31,4 +31,4 @@ var ArticleSchema = new Schema({
 	}
 });
 
-mongoose.model('Article', ArticleSchema);
+mongoose.model('Item', ItemSchema);

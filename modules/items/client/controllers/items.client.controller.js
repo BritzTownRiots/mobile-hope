@@ -1,16 +1,16 @@
 'use strict';
 
-angular.module('articles').controller('ArticlesController', ['$scope', '$stateParams', '$location', 'Authentication', 'Articles',
-	function($scope, $stateParams, $location, Authentication, Articles) {
+angular.module('items').controller('ItemsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Items',
+	function($scope, $stateParams, $location, Authentication, Items) {
 		$scope.authentication = Authentication;
 
 		$scope.create = function() {
-			var article = new Articles({
+			var item = new Items({
 				title: this.title,
 				content: this.content
 			});
-			article.$save(function(response) {
-				$location.path('articles/' + response._id);
+			item.$save(function(response) {
+				$location.path('items/' + response._id);
 
 				$scope.title = '';
 				$scope.content = '';
@@ -19,39 +19,39 @@ angular.module('articles').controller('ArticlesController', ['$scope', '$statePa
 			});
 		};
 
-		$scope.remove = function(article) {
-			if (article) {
-				article.$remove();
+		$scope.remove = function(item) {
+			if (item) {
+				item.$remove();
 
-				for (var i in $scope.articles) {
-					if ($scope.articles[i] === article) {
-						$scope.articles.splice(i, 1);
+				for (var i in $scope.items) {
+					if ($scope.items[i] === item) {
+						$scope.items.splice(i, 1);
 					}
 				}
 			} else {
-				$scope.article.$remove(function() {
-					$location.path('articles');
+				$scope.item.$remove(function() {
+					$location.path('items');
 				});
 			}
 		};
 
 		$scope.update = function() {
-			var article = $scope.article;
+			var item = $scope.item;
 
-			article.$update(function() {
-				$location.path('articles/' + article._id);
+			item.$update(function() {
+				$location.path('items/' + item._id);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
 		};
 
 		$scope.find = function() {
-			$scope.articles = Articles.query();
+			$scope.items = Items.query();
 		};
 
 		$scope.findOne = function() {
-			$scope.article = Articles.get({
-				articleId: $stateParams.articleId
+			$scope.item = Items.get({
+				itemId: $stateParams.itemId
 			});
 		};
 	}

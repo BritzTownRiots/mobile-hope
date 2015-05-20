@@ -5,67 +5,67 @@
  */
 var path = require('path'),
 	mongoose = require('mongoose'),
-	Article = mongoose.model('Article'),
+	Item = mongoose.model('Item'),
 	errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
- * Create a article
+ * Create a item
  */
 exports.create = function(req, res) {
-	var article = new Article(req.body);
-	article.user = req.user;
+	var item = new Item(req.body);
+	item.user = req.user;
 
-	article.save(function(err) {
+	item.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(article);
+			res.json(item);
 		}
 	});
 };
 
 /**
- * Show the current article
+ * Show the current item
  */
 exports.read = function(req, res) {
-	res.json(req.article);
+	res.json(req.item);
 };
 
 /**
- * Update a article
+ * Update a item
  */
 exports.update = function(req, res) {
-	var article = req.article;
+	var item = req.item;
 
-	article.title = req.body.title;
-	article.content = req.body.content;
+	item.title = req.body.title;
+	item.content = req.body.content;
 
-	article.save(function(err) {
+	item.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(article);
+			res.json(item);
 		}
 	});
 };
 
 /**
- * Delete an article
+ * Delete an item
  */
 exports.delete = function(req, res) {
-	var article = req.article;
+	var item = req.item;
 
-	article.remove(function(err) {
+	item.remove(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(article);
+			res.json(item);
 		}
 	});
 };
@@ -74,13 +74,13 @@ exports.delete = function(req, res) {
  * List of Articles
  */
 exports.list = function(req, res) {
-	Article.find().sort('-created').populate('user', 'displayName').exec(function(err, articles) {
+	Item.find().sort('-created').populate('user', 'displayName').exec(function(err, items) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.json(articles);
+			res.json(items);
 		}
 	});
 };
@@ -88,11 +88,11 @@ exports.list = function(req, res) {
 /**
  * Article middleware
  */
-exports.articleByID = function(req, res, next, id) {
-	Article.findById(id).populate('user', 'displayName').exec(function(err, article) {
+exports.itemByID = function(req, res, next, id) {
+	Item.findById(id).populate('user', 'displayName').exec(function(err, item) {
 		if (err) return next(err);
-		if (!article) return next(new Error('Failed to load article ' + id));
-		req.article = article;
+		if (!item) return next(new Error('Failed to load item ' + id));
+		req.item = item;
 		next();
 	});
 };
